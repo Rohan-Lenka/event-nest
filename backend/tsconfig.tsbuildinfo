@@ -1,0 +1,1 @@
+{"root":["./src/db.ts","./src/server.ts","./src/middlewares/checkadmincredsmiddleware.ts","./src/middlewares/checkusercredsmiddleware.ts","./src/middlewares/userauthmiddleware.ts","./src/middlewares/validateformatmiddleware.ts"],"version":"5.8.2"}
