@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdminModel = exports.UserModel = void 0;
+exports.EventModel = exports.SocietyModel = exports.CollegeModel = exports.AdminModel = exports.UserModel = void 0;
 require("dotenv/config");
 const mongoose_1 = __importStar(require("mongoose"));
 const MONGO_URL = process.env.MONGO_URL; // replace with cloud db instance before deploying 
@@ -44,7 +44,7 @@ const UserSchema = new mongoose_1.Schema({
     lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    // college: { type: String, required: true, ref: }
+    college: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "College" }
 });
 exports.UserModel = (0, mongoose_1.model)("User", UserSchema);
 const AdminSchema = new mongoose_1.Schema({
@@ -52,7 +52,33 @@ const AdminSchema = new mongoose_1.Schema({
     lastname: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    // college: { type: String, required: true, ref: }
-    // society: { type: String, required: true, ref: }
+    college: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "College" },
+    society: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "Society" }
 });
 exports.AdminModel = (0, mongoose_1.model)("Admin", AdminSchema);
+const CollegeSchema = new mongoose_1.Schema({
+    name: { type: String, required: true, unique: true }
+});
+exports.CollegeModel = (0, mongoose_1.model)("College", CollegeSchema);
+const SocietySchema = new mongoose_1.Schema({
+    name: { type: String, required: true, unique: true },
+    college: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "College" }
+});
+exports.SocietyModel = (0, mongoose_1.model)("Society", SocietySchema);
+const EventSchema = new mongoose_1.Schema({
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    status: { type: String, required: true },
+    date: {
+        type: {
+            D: { type: Number, required: true },
+            M: { type: Number, required: true },
+            Y: { type: Number, required: true }
+        },
+        required: true
+    },
+    event_URL: { type: String, required: true },
+    society: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "Society" },
+    college: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "College" },
+});
+exports.EventModel = (0, mongoose_1.model)("Event", EventSchema);

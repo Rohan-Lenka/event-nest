@@ -2,13 +2,13 @@ import "dotenv/config"
 import { NextFunction, Request, Response } from "express"
 import jwt from "jsonwebtoken"
 
-const USER_JWT_SECRET = process.env.USER_JWT_SECRET
+const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECERT
 
-function userAuthMiddleware(req: Request, res: Response, next: NextFunction) {
+function adminAuthMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
         const token = req.headers.authorization
         // @ts-ignore
-        const verifiedToken = jwt.verify(token, USER_JWT_SECRET)
+        const verifiedToken = jwt.verify(token, ADMIN_JWT_SECRET)
         if(verifiedToken) {
             // @ts-ignore
             req.userId = verifiedToken.id
@@ -20,4 +20,4 @@ function userAuthMiddleware(req: Request, res: Response, next: NextFunction) {
         })
     }
 }
-export default userAuthMiddleware
+export default adminAuthMiddleware
