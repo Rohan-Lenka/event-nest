@@ -36,9 +36,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventModel = exports.SocietyModel = exports.CollegeModel = exports.AdminModel = exports.UserModel = void 0;
 require("dotenv/config");
 const mongoose_1 = __importStar(require("mongoose"));
-const MONGO_URL = process.env.MONGO_URL; // replace with cloud db instance before deploying 
+const config_1 = require("./config"); // replace with cloud db instance before deploying 
 // @ts-ignore
-mongoose_1.default.connect(MONGO_URL);
+mongoose_1.default.connect(config_1.MONGO_URL);
 const UserSchema = new mongoose_1.Schema({
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
@@ -78,7 +78,7 @@ const EventSchema = new mongoose_1.Schema({
         required: true
     },
     event_URL: { type: String, required: true },
-    society: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "Society" },
     college: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "College" },
+    society: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "Society" }
 });
 exports.EventModel = (0, mongoose_1.model)("Event", EventSchema);

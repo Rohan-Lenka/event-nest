@@ -5,21 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv/config");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const USER_JWT_SECRET = process.env.USER_JWT_SECRET;
+const config_1 = require("../config");
 function userAuthMiddleware(req, res, next) {
+    const token = req.headers.authorization;
     try {
-        const token = req.headers.authorization;
-        // @ts-ignore
-        const verifiedToken = jsonwebtoken_1.default.verify(token, USER_JWT_SECRET);
-        if (verifiedToken) {
+        const decoded = jsonwebtoken_1.default.verify(token, config_1.USER_JWT_SECRET);
+        if (decoded) {
             // @ts-ignore
-            req.userId = verifiedToken.id;
+            req.userId = decoded.id;
             next();
         }
     }
     catch (err) {
-        res.status(403).json({
-            message: "authentication unsuccessful, invalid token"
+        res.status(401).json({
+            message: "unauthorized user"
         });
     }
 }

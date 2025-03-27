@@ -1,22 +1,20 @@
 import "dotenv/config"
 import { NextFunction, Request, Response } from "express"
 import jwt from "jsonwebtoken"
-
-const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECERT
+import { ADMIN_JWT_SECRET } from "../config"
 
 function adminAuthMiddleware(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization
     try {
-        const token = req.headers.authorization
-        // @ts-ignore
-        const verifiedToken = jwt.verify(token, ADMIN_JWT_SECRET)
-        if(verifiedToken) {
+        const decoded = jwt.verify(token as string, ADMIN_JWT_SECRET as string)  
+        if(decoded) {
             // @ts-ignore
-            req.userId = verifiedToken.id
+            req.adminId = decoded.id
             next()
         } 
     } catch(err) {
-        res.status(403).json({
-            message: "authentication unsuccessful, invalid token"
+        res.status(401).json({
+            message: "unauthorized admmin" 
         })
     }
 }

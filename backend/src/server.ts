@@ -3,18 +3,16 @@ import express from "express"
 import jwt from "jsonwebtoken"
 import cors from "cors"
 import bcrypt from "bcryptjs"
-import { UserModel, AdminModel, CollegeModel, SocietyModel } from './db'
+import { UserModel, AdminModel, CollegeModel, SocietyModel, EventModel } from './db'
 import validateFormatMiddleware from "./middlewares/validateFormatMiddleware"
 import userAuthMiddleware from './middlewares/userAuthMiddleware'
+import adminAuthMiddleware from './middlewares/adminAuthMiddleware'
 import checkUserCredsMiddleware from './middlewares/checkUserCredsMiddleware'
 import checkAdminCredsMiddleware from './middlewares/checkAdminCredsMiddleware'
-import adminAuthMiddleware from './middlewares/adminAuthMiddleware'
+import { PORT, ADMIN_JWT_SECRET, USER_JWT_SECRET } from './config'
 import mongoose from 'mongoose'
 
 const app = express()
-const PORT = process.env.PORT
-const USER_JWT_SECRET = process.env.USER_JWT_SECRET
-const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET
 
 app.use(express.json())
 app.use(cors())
@@ -24,10 +22,10 @@ app.post("/api/v1/user/signup", validateFormatMiddleware, async (req, res) => {
     try {
         const user = await UserModel.find({ email })
         if (user.length > 0) {
-        res.status(409).json({
-            message: "user already exists"
-        })
-        return
+            res.status(409).json({
+                message: "user already exists"
+            })
+            return
         }
         const foundCollege = await CollegeModel.findOne({ name: college })
         if (!foundCollege) {
@@ -61,7 +59,7 @@ app.post("/api/v1/user/signin", checkUserCredsMiddleware, async (req, res) => {
 app.post("/api/v1/admin/signup", validateFormatMiddleware, async (req, res) => {
     const { firstname, lastname, email, password, college, society } = req.body
     try {
-        
+
         const admin = await AdminModel.find({ email })
         if (admin.length > 0) {
             res.status(409).json({
@@ -103,7 +101,7 @@ app.post("/api/v1/admin/signup", validateFormatMiddleware, async (req, res) => {
 app.post("/api/v1/admin/signin", checkAdminCredsMiddleware, async (req, res) => {
     const { email } = req.body
     // @ts-ignore
-    const token = jwt.sign({ id: req.headers.userId }, ADMIN_JWT_SECRET)
+    const token = jwt.sign({ id: req.headers.adminId }, ADMIN_JWT_SECRET)
     res.json({
         token,
         message: "admin successfully signed in"
@@ -111,18 +109,59 @@ app.post("/api/v1/admin/signin", checkAdminCredsMiddleware, async (req, res) => 
 })
 
 app.get("/api/v1/user/events", userAuthMiddleware, async (req, res) => {
-
+    // @ts-ignore
+    const _id = req.userId
+    try {
+        const user = await UserModel.findOne({ _id })
+        const events = await EventModel.find({ college: user?.college }).select("name description status date event_URL -_id")
+        res.json({
+            message: "all events fetched",
+            events
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: "server error"
+        })
+    }
 })
 
 app.get("/api/v1/admin/events", adminAuthMiddleware, async (req, res) => {
-
+    // @ts-ignore
+    const _id = req.adminId
+    try {
+        const admin = await AdminModel.findOne({ _id })
+        const events = await EventModel.find({ college: admin?.college }).select("name description status date event_URL -_id")
+        res.json({
+            message: "all events fetched",
+            events
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: "server error"
+        })
+    }
 })
 
-app.post("/api/v1/admin/events", async (req, res) => {
-
+app.post("/api/v1/admin/events", adminAuthMiddleware, async (req, res) => {
+    const { name, description, status, date, event_URL } = req.body
+    // @ts-ignore
+    const _id = req.adminId
+    try {
+        const admin = await AdminModel.findOne({ _id })
+        // @ts-ignore
+        await EventModel.create({ name, description, status, date, event_URL, college: admin?.college, society: admin?.society })
+        res.json({
+            message: "new event added successfully"
+        })
+        return
+    } catch (err) {
+        res.status(500).json({
+            message: "server error"
+        })
+    }
 })
 
-app.delete("/api/v1/admin/events", async (req, res) => {
+app.delete("/api/v1/admin/events", adminAuthMiddleware, async (req, res) => {
 
 })
 

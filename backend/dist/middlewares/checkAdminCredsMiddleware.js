@@ -32,7 +32,7 @@ function checkAdminCredsMiddleware(req, res, next) {
                 });
             }
             else {
-                req.headers.userId = foundAdmin._id.toString();
+                req.headers.adminId = foundAdmin._id.toString();
                 next();
             }
         }

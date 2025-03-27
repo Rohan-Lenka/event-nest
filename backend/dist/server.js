@@ -23,10 +23,8 @@ const userAuthMiddleware_1 = __importDefault(require("./middlewares/userAuthMidd
 const checkUserCredsMiddleware_1 = __importDefault(require("./middlewares/checkUserCredsMiddleware"));
 const checkAdminCredsMiddleware_1 = __importDefault(require("./middlewares/checkAdminCredsMiddleware"));
 const adminAuthMiddleware_1 = __importDefault(require("./middlewares/adminAuthMiddleware"));
+const config_1 = require("./config");
 const app = (0, express_1.default)();
-const PORT = process.env.PORT;
-const USER_JWT_SECRET = process.env.USER_JWT_SECRET;
-const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET;
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.post("/api/v1/user/signup", validateFormatMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -61,7 +59,7 @@ app.post("/api/v1/user/signup", validateFormatMiddleware_1.default, (req, res) =
 app.post("/api/v1/user/signin", checkUserCredsMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
     // @ts-ignore
-    const token = jsonwebtoken_1.default.sign({ id: req.headers.userId }, USER_JWT_SECRET);
+    const token = jsonwebtoken_1.default.sign({ id: req.headers.userId }, config_1.USER_JWT_SECRET);
     res.json({
         token,
         message: "user successfully signed in"
@@ -109,20 +107,67 @@ app.post("/api/v1/admin/signup", validateFormatMiddleware_1.default, (req, res) 
 app.post("/api/v1/admin/signin", checkAdminCredsMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
     // @ts-ignore
-    const token = jsonwebtoken_1.default.sign({ id: req.headers.userId }, ADMIN_JWT_SECRET);
+    const token = jsonwebtoken_1.default.sign({ id: req.headers.adminId }, config_1.ADMIN_JWT_SECRET);
     res.json({
         token,
         message: "admin successfully signed in"
     });
 }));
 app.get("/api/v1/user/events", userAuthMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // @ts-ignore
+    const _id = req.userId;
+    try {
+        const user = yield db_1.UserModel.findOne({ _id });
+        const events = yield db_1.EventModel.find({ college: user === null || user === void 0 ? void 0 : user.college }).select("name description status date event_URL -_id");
+        res.json({
+            message: "all events fetched",
+            events
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "server error"
+        });
+    }
 }));
 app.get("/api/v1/admin/events", adminAuthMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // @ts-ignore
+    const _id = req.adminId;
+    try {
+        const admin = yield db_1.AdminModel.findOne({ _id });
+        const events = yield db_1.EventModel.find({ college: admin === null || admin === void 0 ? void 0 : admin.college }).select("name description status date event_URL -_id");
+        res.json({
+            message: "all events fetched",
+            events
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "server error"
+        });
+    }
 }));
-app.post("/api/v1/admin/events", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/api/v1/admin/events", adminAuthMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, description, status, date, event_URL } = req.body;
+    // @ts-ignore
+    const _id = req.adminId;
+    try {
+        const admin = yield db_1.AdminModel.findOne({ _id });
+        // @ts-ignore
+        yield db_1.EventModel.create({ name, description, status, date, event_URL, college: admin === null || admin === void 0 ? void 0 : admin.college, society: admin === null || admin === void 0 ? void 0 : admin.society });
+        res.json({
+            message: "new event added successfully"
+        });
+        return;
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "server error"
+        });
+    }
 }));
 app.delete("/api/v1/admin/events", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
-app.listen(PORT, () => {
+app.listen(config_1.PORT, () => {
     console.log("server running");
 });

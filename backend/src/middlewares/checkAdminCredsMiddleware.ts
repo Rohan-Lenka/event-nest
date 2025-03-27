@@ -18,7 +18,7 @@ async function checkAdminCredsMiddleware( req: Request, res: Response, next: Nex
                 message: "wrong password"
             })
         } else {
-            req.headers.userId = foundAdmin._id.toString()
+            req.headers.adminId = foundAdmin._id.toString()
             next()
         }
     } catch(err) {

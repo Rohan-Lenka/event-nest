@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import mongoose, { model, Schema } from "mongoose";
-const MONGO_URL = process.env.MONGO_URL  // replace with cloud db instance before deploying 
+import { MONGO_URL } from './config'; // replace with cloud db instance before deploying 
 // @ts-ignore
 mongoose.connect(MONGO_URL)
 
@@ -47,7 +47,7 @@ const EventSchema = new Schema({
         required: true
     },
     event_URL: { type: String, required: true },
-    society: { type: mongoose.Types.ObjectId, required: true, ref: "Society" },
     college: { type: mongoose.Types.ObjectId, required: true, ref: "College" },
+    society: { type: mongoose.Types.ObjectId, required: true, ref: "Society" }
 })
 export const EventModel = model("Event", EventSchema)
