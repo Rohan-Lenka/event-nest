@@ -36,9 +36,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventModel = exports.SocietyModel = exports.CollegeModel = exports.AdminModel = exports.UserModel = void 0;
 require("dotenv/config");
 const mongoose_1 = __importStar(require("mongoose"));
-const config_1 = require("./config"); // replace with cloud db instance before deploying 
-// @ts-ignore
-mongoose_1.default.connect(config_1.MONGO_URL);
 const UserSchema = new mongoose_1.Schema({
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },

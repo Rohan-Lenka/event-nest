@@ -12,21 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("dotenv/config");
 const express_1 = __importDefault(require("express"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const cors_1 = __importDefault(require("cors"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const db_1 = require("./db");
 const validateFormatMiddleware_1 = __importDefault(require("./middlewares/validateFormatMiddleware"));
-const userAuthMiddleware_1 = __importDefault(require("./middlewares/userAuthMiddleware"));
 const checkUserCredsMiddleware_1 = __importDefault(require("./middlewares/checkUserCredsMiddleware"));
 const checkAdminCredsMiddleware_1 = __importDefault(require("./middlewares/checkAdminCredsMiddleware"));
-const adminAuthMiddleware_1 = __importDefault(require("./middlewares/adminAuthMiddleware"));
-const config_1 = require("./config");
+const authMiddleware_1 = __importDefault(require("./middlewares/authMiddleware"));
+const config_1 = require("./config"); // replace MONGO_URL with mongo cloud instance before deployment
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
+// signup
 app.post("/api/v1/user/signup", validateFormatMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstname, lastname, email, password, college } = req.body;
     try {
@@ -65,6 +65,7 @@ app.post("/api/v1/user/signin", checkUserCredsMiddleware_1.default, (req, res) =
         message: "user successfully signed in"
     });
 }));
+// signin
 app.post("/api/v1/admin/signup", validateFormatMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstname, lastname, email, password, college, society } = req.body;
     try {
@@ -113,16 +114,32 @@ app.post("/api/v1/admin/signin", checkAdminCredsMiddleware_1.default, (req, res)
         message: "admin successfully signed in"
     });
 }));
-app.get("/api/v1/user/events", userAuthMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// events for user & admin 
+app.get("/api/v1/events", authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // @ts-ignore
-    const _id = req.userId;
+    const _id = req.Id;
+    const type = req.headers.type;
     try {
-        const user = yield db_1.UserModel.findOne({ _id });
-        const events = yield db_1.EventModel.find({ college: user === null || user === void 0 ? void 0 : user.college }).select("name description status date event_URL -_id");
-        res.json({
-            message: "all events fetched",
-            events
-        });
+        if (type === "admin") {
+            const admin = yield db_1.AdminModel.findOne({ _id });
+            const events = yield db_1.EventModel.find({ college: admin === null || admin === void 0 ? void 0 : admin.college }).select("name description status date event_URL -_id");
+            res.json({
+                message: "all events fetched",
+                events
+            });
+        }
+        else if (type === "user") {
+            const user = yield db_1.UserModel.findOne({ _id });
+            const events = yield db_1.EventModel.find({ college: user === null || user === void 0 ? void 0 : user.college }).select("name description status date event_URL -_id");
+            res.json({
+                message: "all events fetched",
+                events
+            });
+        }
+        else {
+            // can never reach here
+            // checked by middleware
+        }
     }
     catch (err) {
         res.status(500).json({
@@ -130,15 +147,21 @@ app.get("/api/v1/user/events", userAuthMiddleware_1.default, (req, res) => __awa
         });
     }
 }));
-app.get("/api/v1/admin/events", adminAuthMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// admin
+app.get("/api/v1/admin/events", authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // @ts-ignore
-    const _id = req.adminId;
+    const _id = req.Id;
     try {
         const admin = yield db_1.AdminModel.findOne({ _id });
-        const events = yield db_1.EventModel.find({ college: admin === null || admin === void 0 ? void 0 : admin.college }).select("name description status date event_URL -_id");
+        if (!admin) {
+            res.status(404).json({
+                message: "admin not found"
+            });
+            return;
+        }
+        const adminEvents = yield db_1.EventModel.find({ society: admin === null || admin === void 0 ? void 0 : admin.society }).select("name description status date event_URL -_id");
         res.json({
-            message: "all events fetched",
-            events
+            adminEvents
         });
     }
     catch (err) {
@@ -147,10 +170,10 @@ app.get("/api/v1/admin/events", adminAuthMiddleware_1.default, (req, res) => __a
         });
     }
 }));
-app.post("/api/v1/admin/events", adminAuthMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/api/v1/admin/events", authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, description, status, date, event_URL } = req.body;
     // @ts-ignore
-    const _id = req.adminId;
+    const _id = req.Id;
     try {
         const admin = yield db_1.AdminModel.findOne({ _id });
         // @ts-ignore
@@ -166,8 +189,45 @@ app.post("/api/v1/admin/events", adminAuthMiddleware_1.default, (req, res) => __
         });
     }
 }));
-app.delete("/api/v1/admin/events", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.delete("/api/v1/admin/events/:id", authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const _id = req.params.id;
+    try {
+        const event = yield db_1.EventModel.findOne({ _id });
+        if (!event) {
+            res.status(404).json({
+                // @ts-ignore
+                message: "requested event to delete was not found"
+            });
+            return;
+        }
+        yield db_1.EventModel.findByIdAndDelete(_id);
+        res.json({
+            // @ts-ignore
+            message: `${event.name} event deleted successfully`
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "server error"
+        });
+    }
 }));
-app.listen(config_1.PORT, () => {
-    console.log("server running");
-});
+function main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // @ts-ignore
+            yield mongoose_1.default.connect(config_1.MONGO_URL);
+            console.log("Connected to database");
+            const server = app.listen(config_1.PORT, () => {
+                console.log(`Server running on port ${config_1.PORT}...`);
+            });
+            server.on('error', (err) => {
+                console.error("Server failed to start:", err);
+            });
+        }
+        catch (err) {
+            console.error("Connection to DB failed:", err);
+        }
+    });
+}
+main();

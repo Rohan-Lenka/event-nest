@@ -1,8 +1,5 @@
 import 'dotenv/config'
 import mongoose, { model, Schema } from "mongoose";
-import { MONGO_URL } from './config'; // replace with cloud db instance before deploying 
-// @ts-ignore
-mongoose.connect(MONGO_URL)
 
 const UserSchema = new Schema({
     firstname: { type: String, required: true },
