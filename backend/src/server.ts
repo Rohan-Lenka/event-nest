@@ -15,7 +15,7 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-// signup
+// user
 app.post("/api/v1/user/signup", validateFormatMiddleware, async (req, res) => {
     const { firstname, lastname, email, password, college } = req.body
     try {
@@ -55,7 +55,7 @@ app.post("/api/v1/user/signin", checkUserCredsMiddleware, async (req, res) => {
     })
 })
 
-// signin
+// admin
 app.post("/api/v1/admin/signup", validateFormatMiddleware, async (req, res) => {
     const { firstname, lastname, email, password, college, society } = req.body
     try {
@@ -116,14 +116,14 @@ app.get("/api/v1/events", authMiddleware, async (req, res) => {
     try {
         if (type === "admin") {
             const admin = await AdminModel.findOne({ _id })
-            const events = await EventModel.find({ college: admin?.college }).select("name description status date event_URL -_id")
+            const events = await EventModel.find({ college: admin?.college }).select("name description society status date event_URL -_id")
             res.json({
                 message: "all events fetched",
                 events
             })
         } else if (type === "user") {
             const user = await UserModel.findOne({ _id })
-            const events = await EventModel.find({ college: user?.college }).select("name description status date event_URL -_id")
+            const events = await EventModel.find({ college: user?.college }).select("name description society status date event_URL -_id")
             res.json({
                 message: "all events fetched",
                 events
@@ -139,7 +139,7 @@ app.get("/api/v1/events", authMiddleware, async (req, res) => {
     }
 })
 
-// admin
+// admin control 
 app.get("/api/v1/admin/events", authMiddleware, async (req, res) => {
     // @ts-ignore
     const _id = req.Id
@@ -151,7 +151,7 @@ app.get("/api/v1/admin/events", authMiddleware, async (req, res) => {
             })
             return 
         }
-        const adminEvents = await EventModel.find({ society: admin?.society }).select("name description status date event_URL -_id")
+        const adminEvents = await EventModel.find({ admin: admin?._id }).select("name description society status date event_URL -_id")
         res.json({
             adminEvents
         })
@@ -168,13 +168,37 @@ app.post("/api/v1/admin/events", authMiddleware, async (req, res) => {
     const _id = req.Id
     try {
         const admin = await AdminModel.findOne({ _id })
+        const society = await SocietyModel.findOne({ _id: admin?.society })
         // @ts-ignore
-        await EventModel.create({ name, description, status, date, event_URL, college: admin?.college, society: admin?.society })
+        await EventModel.create({ name, description, status, date, event_URL, college: admin?.college, admin: admin?._id, society: society?.name })
         res.json({
             message: "new event added successfully"
         })
         return
     } catch (err) {
+        res.status(500).json({
+            message: "server error"
+        })
+    }
+})
+
+app.put("/api/v1/admin/events/:id", authMiddleware, async (req, res) => {
+    const { newName, newDescription, newStatus, newDate, newEvent_URL } = req.body
+    const _id = req.params.id
+    try {
+        const event = await EventModel.findOne({ _id })
+        if (!event) {
+            res.status(404).json({
+                // @ts-ignore
+                message: "requested event to update was not found"
+            })
+            return
+        }
+        await EventModel.findByIdAndUpdate( _id , {name: newName, description: newDescription, status: newStatus, date: newDate, event_URL: newEvent_URL})
+        res.json({
+            message: "event updated successfully"
+        })
+    } catch(err) {
         res.status(500).json({
             message: "server error"
         })

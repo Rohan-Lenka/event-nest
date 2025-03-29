@@ -76,6 +76,7 @@ const EventSchema = new mongoose_1.Schema({
     },
     event_URL: { type: String, required: true },
     college: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "College" },
-    society: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "Society" }
+    admin: { type: mongoose_1.default.Types.ObjectId, required: true, ref: "Admin" },
+    society: { type: String, required: true }
 });
 exports.EventModel = (0, mongoose_1.model)("Event", EventSchema);

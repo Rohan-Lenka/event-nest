@@ -45,6 +45,7 @@ const EventSchema = new Schema({
     },
     event_URL: { type: String, required: true },
     college: { type: mongoose.Types.ObjectId, required: true, ref: "College" },
-    society: { type: mongoose.Types.ObjectId, required: true, ref: "Society" }
+    admin: { type: mongoose.Types.ObjectId, required: true, ref: "Admin" },
+    society: { type: String, required: true }
 })
 export const EventModel = model("Event", EventSchema)
