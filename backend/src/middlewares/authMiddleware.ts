@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ADMIN_JWT_SECRET } from "../config"
+import { ADMIN_JWT_SECRET, MODERATOR_JWT_SECRET } from "../config"
 import { USER_JWT_SECRET } from "../config"
 import { NextFunction, Request, Response } from "express";
 
@@ -30,6 +30,19 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
         } catch (err) {
             res.status(401).json({
                 message: "unauthorized user"
+            })
+        }
+    } else if(type === "mod") {
+        try {
+            const decoded = jwt.verify(token as string, MODERATOR_JWT_SECRET as string)
+            if (decoded) {
+                // @ts-ignore
+                req.Id = decoded.id
+                next()
+            }
+        } catch (err) {
+            res.status(401).json({
+                message: "unauthorized moderator"
             })
         }
     } else {

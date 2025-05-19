@@ -23,7 +23,7 @@ function validateFormatMiddleware(req: Request, res: Response, next: NextFunctio
     
       const parsedData = reqBody.safeParse(req.body);
       if (!parsedData.success) {
-        res.json({
+        res.status(400).json({
           message: "Incorrect format",
           error: parsedData.error.issues[0].message,
         });

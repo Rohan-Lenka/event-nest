@@ -49,3 +49,22 @@ const EventSchema = new Schema({
     society: { type: String, required: true }
 })
 export const EventModel = model("Event", EventSchema)
+
+const ModeratorSchema = new Schema({
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    secret_key: { type: String, required: true }
+})
+export const ModeratorModel = model("Moderator", ModeratorSchema)
+
+const RequestSchema = new Schema({
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    college: { type: String, required: true },
+    society: { type: String, required: true },
+    identity_proof: { type: String, required: true }   
+})
+export const RequestModel = model("Request", RequestSchema) 
