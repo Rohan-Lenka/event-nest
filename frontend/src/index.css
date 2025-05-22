@@ -14,12 +14,13 @@
   --color-neonyellow: #fffd5b;
 
   --color-neonred: #ff8080;
+
+  --color-neonorange: #ff5d35;
 }
 
 @layer utilities {
   .placeholder-style::placeholder {
     letter-spacing: var(--tracking-wide);
-     /* margin: 5px; */
   }
 }
 

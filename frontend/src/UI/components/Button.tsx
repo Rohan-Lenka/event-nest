@@ -12,7 +12,7 @@ const variantClasses = {
     "edit": "bg-neonyellow",
     "delete": "bg-neonred",
 }
-const defaultStyles = "text-xl tracking-wide font-normal cursor-pointer flex justify-center items-center gap-2 px-[10px] py-[6px] rounded-md"
+const defaultStyles = "text-black text-xl tracking-wide font-normal cursor-pointer flex justify-center items-center gap-2 px-[10px] py-[6px] rounded-md"
 const hoverEffects = "hover:opacity-75"
 
 const Button = ({ variant, text, startIcon }: ButtonProps) => {
