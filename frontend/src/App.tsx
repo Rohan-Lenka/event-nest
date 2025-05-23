@@ -1,13 +1,13 @@
 import DeleteIcon from "./icons/DeleteIcon"
 import EditIcon from "./icons/EditIcon"
 import PlusIcon from "./icons/PlusIcon"
-import Button from "./UI/components/Button"
-import EventActionCard from "./UI/components/Cards/EventActionCard"
-import EventCard from "./UI/components/Cards/EventCard"
-import LoginCard from "./UI/components/Cards/LoginCard"
-import Card from "./UI/components/Cards/LoginCard"
-import RegisterCard from "./UI/components/Cards/RegisterCard"
-import TextInput from "./UI/components/Input"
+import Button from "./UI/Button"
+import EventCard from "./UI/components/Cards/EventCards/EventDisplayCard"
+import LoginCard from "./UI/components/Cards/AuthCards/LoginCard"
+import Card from "./UI/components/Cards/AuthCards/LoginCard"
+import RegisterCard from "./UI/components/Cards/AuthCards/RegisterCard"
+import TextInput from "./UI/Input"
+import EventDisplayCard from "./UI/components/Cards/EventCards/EventDisplayCard"
 
 const App = () => {
   return <div className="w-screen h-screen">
@@ -20,8 +20,10 @@ const App = () => {
     <br /> */}
     <div className="w-full h-full flex justify-center items-center ">
       {/* <RegisterCard person="admin"/> */}
+      
+      {/* <LoginCard person="moderator"/> */}
 
-      {/* <EventCard name="Dummy Contest"
+      {/* <EventDisplayCard name="Dummy Contest"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor commodo eleifend. Ut fermentum efficitur quam, a tincidunt ex. In ipsum nunc, sagittis mollis iaculis eu, aliquet id mauris. Donec euismod enim vel turpis dictum tincidunt. Nunc nec nunc in nisi euismod accumsan id feugiat tortor. Sed nec lacinia nisl. Vestibulum vel lobortis dui, a molestie purus. In et neque pharetra arcu malesuada rutrum. "
         status="Upcoming"
         date="22-12-2025"
@@ -30,8 +32,8 @@ const App = () => {
         action={true}
       /> */}
 
-        <EventActionCard 
-        />
+        {/* <EventActionCard 
+        /> */}
     </div>
   </div>
 }

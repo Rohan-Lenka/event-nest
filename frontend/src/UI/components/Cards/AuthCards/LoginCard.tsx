@@ -1,12 +1,12 @@
-import Button from "../Button"
-import Input from "../Input"
+import Button from "../../../Button"
+import Input from "../../../Input"
 
 type LoginCardProps = {
     person: "user" | "admin" | "moderator",
     // link: string 
 }
 
-const defaultStyles = "flex flex-col gap-10 p-[12px] bg-blue-800 w-[4000px]"
+const defaultStyles = "flex flex-col gap-10 p-[12px] bg-blue-800 w-[400px]"
 
 const LoginCard = ({ person }: LoginCardProps) => {
     return <div className={`${defaultStyles}`}>

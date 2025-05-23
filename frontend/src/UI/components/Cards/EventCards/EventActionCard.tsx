@@ -1,6 +1,6 @@
-import Button from "../Button"
-import Input from "../Input"
-import "../../../styles/radio.css"
+import Button from "../../../Button"
+import Input from "../../../Input"
+import "../../../../styles/radio.css"
 
 type EventActionCardProps = {
     name?: string,

@@ -1,11 +1,11 @@
 import type { ReactElement, ReactHTMLElement } from "react"
-import "../../../styles/scrollbar.css"
-import Button from "../Button"
-import EditIcon from "../../../icons/EditIcon"
-import DeleteIcon from "../../../icons/DeleteIcon"
-import ShinyCover from "../ShinyCover"
+import "../../../../styles/scrollbar.css"
+import Button from "../../../Button"
+import EditIcon from "../../../../icons/EditIcon"
+import DeleteIcon from "../../../../icons/DeleteIcon"
+import ShinyCover from "../../../ShinyCover"
 
-type EventCardProps = {
+type EventDisplayCardProps = {
     name: string,
     description: string,
     status: "Ongoing" | "Upcoming",
@@ -21,7 +21,7 @@ const eventTime = {
     "Upcoming": "starts from ",
 }
 
-const EventCard = ({ name, description, status, date, society, event_URL, action }: EventCardProps) => {
+const EventDisplayCard = ({ name, description, status, date, society, event_URL, action }: EventDisplayCardProps) => {
     return <ShinyCover childBorderRadius="md">
         <div className={`${defaultStyles} shiny-border`}>
         <Name name={name} />
@@ -84,4 +84,4 @@ const ActionSection = () => {
     </div>
 }
 
-export default EventCard
+export default EventDisplayCard
