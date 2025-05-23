@@ -263,6 +263,7 @@ app.get("/api/v1/moderator/requests", authMiddleware, async (req, res) => {
     }
 })
 
+
 app.put("/api/v1/moderator/requests/manage/:id", authMiddleware, async (req, res) => {
     const { action } = req.body // approve / reject 
     const _id = req.params.id
@@ -318,6 +319,25 @@ app.put("/api/v1/moderator/requests/manage/:id", authMiddleware, async (req, res
 })
 
 // only for super admin
+app.get("/api/v1/super-admin/moderators", authMiddleware, async (req, res) => {
+    //@ts-ignore
+    const _id = req.Id
+    if (_id !== SUPER_ADMIN_ID) {
+        res.status(403).json({
+            message: "permission denied, access only restricted to super admin"
+        })
+        return
+    }
+    try {
+        const mods = await ModeratorModel.find().select("firstname lastname email")
+        res.status(200).json({
+            mods
+        })
+    } catch (err) {
+        sendServerError(res)
+    }
+})
+
 app.post("/api/v1/super-admin/moderators", authMiddleware, async (req, res) => {
     //@ts-ignore
     const _id = req.Id

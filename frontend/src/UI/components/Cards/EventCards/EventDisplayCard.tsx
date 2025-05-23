@@ -1,4 +1,3 @@
-import type { ReactElement, ReactHTMLElement } from "react"
 import "../../../../styles/scrollbar.css"
 import Button from "../../../Button"
 import EditIcon from "../../../../icons/EditIcon"
@@ -22,7 +21,7 @@ const eventTime = {
 }
 
 const EventDisplayCard = ({ name, description, status, date, society, event_URL, action }: EventDisplayCardProps) => {
-    return <ShinyCover childBorderRadius="md">
+    return <ShinyCover childBorderRadius="rounded-md" coverType="primary">
         <div className={`${defaultStyles} shiny-border`}>
         <Name name={name} />
         <Description text={description} />

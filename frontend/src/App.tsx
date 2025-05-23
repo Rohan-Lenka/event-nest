@@ -8,16 +8,13 @@ import Card from "./UI/components/Cards/AuthCards/LoginCard"
 import RegisterCard from "./UI/components/Cards/AuthCards/RegisterCard"
 import TextInput from "./UI/Input"
 import EventDisplayCard from "./UI/components/Cards/EventCards/EventDisplayCard"
+import Info from "./UI/Info"
+import RequestsCard from "./UI/components/Cards/ModCards/RequestsCard"
+import AddModeratorCard from "./UI/components/Cards/ModCards/AddModeratorCard"
+import ModeratorCard from "./UI/components/Cards/ModCards/ModeratorsCard"
 
 const App = () => {
   return <div className="w-screen h-screen">
-    {/* <Button text="Click me" variant="primary" startIcon={<PlusIcon />} />
-    <br />
-    <br />
-    <TextInput placeholder="search"/>
-    <br />
-    <br />
-    <br /> */}
     <div className="w-full h-full flex justify-center items-center ">
       {/* <RegisterCard person="admin"/> */}
       
@@ -34,6 +31,20 @@ const App = () => {
 
         {/* <EventActionCard 
         /> */}
+
+        {/* <RequestsCard
+        fname="Rohan"
+        lname="Lenka"
+        email="abc@gmail.com"
+        college="abc" 
+        society="abcdef"
+        proof_link="https://www.youtube.com/fewifjsbfgjdvhfb" 
+        /> */}
+
+        {/* <AddModeratorCard /> */}
+
+          <ModeratorCard fname="Rohan" lname="Lenka" email="aguydgwyde7dgew7dedeg8degbc@gmail.com" />
+
     </div>
   </div>
 }
