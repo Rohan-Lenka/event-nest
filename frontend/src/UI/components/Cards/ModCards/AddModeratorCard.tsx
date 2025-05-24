@@ -13,7 +13,7 @@ const AddModeratorCard = ({ }: AddModeratorCardProps) => {
             <Input type="text" placeholder="Enter moderator lastname" />
             <Input type="text" placeholder="Enter moderator email" />
         </div>
-        <Button variant="secondary" text="Add" />
+        <Button variant="primary" text="Add" />
     </div>
 }
 

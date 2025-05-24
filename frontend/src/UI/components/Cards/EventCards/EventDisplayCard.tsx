@@ -14,14 +14,14 @@ type EventDisplayCardProps = {
     action: boolean 
 }
 
-const defaultStyles = "text-white tracking-wide flex flex-col gap-5 p-[18px] bg-blue-900 rounded-md"
+const defaultStyles = "text-white tracking-wide flex flex-col gap-5 p-[18px] bg-blue-900 rounded-md max-h-100 max-w-72"
 const eventTime = {
     "Ongoing": "ends in ",
     "Upcoming": "starts from ",
 }
 
 const EventDisplayCard = ({ name, description, status, date, society, event_URL, action }: EventDisplayCardProps) => {
-    return <ShinyCover childBorderRadius="rounded-md" coverType="primary">
+    return <ShinyCover maxWidth="max-w-72" childBorderRadius="rounded-md" coverType="primary">
         <div className={`${defaultStyles} shiny-border`}>
         <Name name={name} />
         <Description text={description} />
@@ -36,24 +36,24 @@ const EventDisplayCard = ({ name, description, status, date, society, event_URL,
 }
 
 const Name = ({ name }: { name: string }) => {
-    return <div className="text-center text-3xl font-semibold">
+    return <div className="text-center text-2xl font-semibold">
         {name}
     </div>
 }
 
 const applyScroll = "max-h-[200px] overflow-y-auto"
 const Description = ({ text }: { text: string }) => {
-    return <div className={`text-sm ${applyScroll}`} >
+    return <div className={`text-xs ${applyScroll}`} >
         {text}
     </div>
 }
 
 const Date = ({ status, date }: { status: "Ongoing" | "Upcoming", date: string }) => {
     return <div className="">
-        <span className={`uppercase font-bold ${status === "Ongoing" ? "text-green-300" : "text-yellow-300"} `}>
+        <span className={`text-sm uppercase font-bold ${status === "Ongoing" ? "text-green-300" : "text-yellow-300"} `}>
             {status}
         </span>
-        <span className="text-sm">
+        <span className="text-xs">
             : {eventTime[status]} {date}
         </span>
     </div>
@@ -61,10 +61,10 @@ const Date = ({ status, date }: { status: "Ongoing" | "Upcoming", date: string }
 
 const Society = ({ society }: { society: string }) => {
     return <div className="">
-        <span className="uppercase font-bold ">
+        <span className="text-sm uppercase font-bold ">
             SOCIETY
         </span>
-        <span className="text-sm">
+        <span className="text-xs">
             : {society}
         </span>
     </div>

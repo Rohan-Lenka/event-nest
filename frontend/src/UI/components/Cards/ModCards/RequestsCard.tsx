@@ -14,7 +14,7 @@ type RequestCardProps = {
 const defaultStyles = "bg-blue-900 flex flex-col gap-10 text-lg tracking-wide rounded-md p-4"
 
 const RequestsCard = ({ fname, lname, email, college, society, proof_link }: RequestCardProps) => {
-    return <ShinyCover childBorderRadius="rounded-md" coverType="secondary" >
+    return <ShinyCover maxWidth="max-w-full" childBorderRadius="rounded-md" coverType="secondary" >
         <div className={`${defaultStyles}`}>
             <div>
                 <Info title="Firstname" content={fname} contentType="text" />

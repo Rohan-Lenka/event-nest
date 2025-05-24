@@ -14,7 +14,7 @@ const LoginCard = ({ person }: LoginCardProps) => {
             <Input type="text" placeholder="Enter your email" />
             <Input type="password" placeholder={`Enter your ${person === "moderator" ? "secret key" : "password"}`} />
         </div>
-        <Button variant="secondary" text="Login" />
+        <Button variant="primary" text="Login" />
     </div>
 }
 export default LoginCard

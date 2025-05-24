@@ -12,12 +12,24 @@ import Info from "./UI/Info"
 import RequestsCard from "./UI/components/Cards/ModCards/RequestsCard"
 import AddModeratorCard from "./UI/components/Cards/ModCards/AddModeratorCard"
 import ModeratorCard from "./UI/components/Cards/ModCards/ModeratorsCard"
+import Modal from "./UI/Modal"
+import Input from "./UI/Input"
+import EventActionCard from "./UI/components/Cards/EventCards/EventActionCard"
+import { useState } from "react"
+import MainContent from "./UI/components/MainContent"
+import Sidebar from "./UI/components/Sidebar"
+import SidebarItem from "./UI/components/SidebarItem"
+import EventsIcon from "./icons/EventsIcon"
+import AboutIcon from "./icons/AboutIcon"
+import WorkshopIcon from "./icons/workshopIcon"
 
 const App = () => {
+  const [s, ss] = useState(true)
+
   return <div className="w-screen h-screen">
-    <div className="w-full h-full flex justify-center items-center ">
+    <div className="w-full h-full ">
       {/* <RegisterCard person="admin"/> */}
-      
+
       {/* <LoginCard person="moderator"/> */}
 
       {/* <EventDisplayCard name="Dummy Contest"
@@ -29,10 +41,10 @@ const App = () => {
         action={true}
       /> */}
 
-        {/* <EventActionCard 
+      {/* <EventActionCard 
         /> */}
 
-        {/* <RequestsCard
+      {/* <RequestsCard
         fname="Rohan"
         lname="Lenka"
         email="abc@gmail.com"
@@ -41,10 +53,23 @@ const App = () => {
         proof_link="https://www.youtube.com/fewifjsbfgjdvhfb" 
         /> */}
 
-        {/* <AddModeratorCard /> */}
+      {/* <AddModeratorCard /> */}
 
-          <ModeratorCard fname="Rohan" lname="Lenka" email="aguydgwyde7dgew7dedeg8degbc@gmail.com" />
+      {/* <ModeratorCard fname="Rohan" lname="Lenka" email="aguydgwyde7dgew7dedeg8degbc@gmail.com" /> */}
+      {/* <Modal onClose={() => { ss(s => !s) }} open={s} >
+        <AddModeratorCard />
+      </Modal> */}
+      <Sidebar>
+        <>
+          <SidebarItem onClick={() => {}} color="text-white" text="Events" icon={<EventsIcon />} />
+          <SidebarItem onClick={() => {}} color="text-white" text="About" icon={<AboutIcon />} />
+          <SidebarItem onClick={() => {}} color="text-white" text="Workshop" icon={<WorkshopIcon />} />
+        </>
+      </Sidebar>
 
+        <MainContent>
+<ModeratorCard fname="Rohan" lname="Lenka" email="aguydgwyde7dgew7dedeg8degbc@gmail.com" />
+        </MainContent>
     </div>
   </div>
 }

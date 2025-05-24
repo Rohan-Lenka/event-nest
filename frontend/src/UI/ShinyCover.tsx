@@ -1,6 +1,7 @@
 import type { ReactElement } from "react"
 
 type ShinyCoverProps = {
+    maxWidth: string 
     childBorderRadius: string;
     coverType: "primary" | "secondary";
     children: ReactElement;
@@ -11,8 +12,8 @@ const cover = {
     "secondary": "bg-gradient-to-br from-cyan-300 to-indigo-600",
 }
 
-const ShinyCover = ({ childBorderRadius, children, coverType }: ShinyCoverProps) => {
-    return <div className={`w-[320px] ${childBorderRadius} ${cover[coverType]} p-[2px]`}>
+const ShinyCover = ({ maxWidth, childBorderRadius, children, coverType }: ShinyCoverProps) => {
+    return <div className={`${childBorderRadius} ${cover[coverType]} p-[2px] ${maxWidth}`}>
         {children}
     </div>
 }
