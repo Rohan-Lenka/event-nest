@@ -263,7 +263,6 @@ app.get("/api/v1/moderator/requests", authMiddleware, async (req, res) => {
     }
 })
 
-
 app.put("/api/v1/moderator/requests/manage/:id", authMiddleware, async (req, res) => {
     const { action } = req.body // approve / reject 
     const _id = req.params.id

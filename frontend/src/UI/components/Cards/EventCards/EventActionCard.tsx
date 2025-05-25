@@ -1,6 +1,7 @@
 import Button from "../../../Button"
 import Input from "../../../Input"
 import "../../../../styles/radio.css"
+import Textarea from "../../../Textarea"
 
 type EventActionCardProps = {
     name?: string,
@@ -18,7 +19,7 @@ const EventActionCard = ({ name, description, status, date, event_URL }: EventAc
     return <div className={`${defaultStyles}`}>
         <div className={`${inputSectionStyles}`} >
             <Input type="text" placeholder="Event name" value={name} />
-            <Input type="bigtext" placeholder="Event description" value={description} />
+            <Textarea placeholder="Event description" value={description} />
             <div className="text-gray-400 flex gap-6">
                 <div className="">
                     <Input type="date" value={date} />
@@ -34,7 +35,7 @@ const EventActionCard = ({ name, description, status, date, event_URL }: EventAc
                     </div>
                 </div>
             </div>
-            <Input type="url" placeholder="Paste event webiste URL here" value={event_URL} />
+            <Input type="url" placeholder="Paste event website URL here" value={event_URL} />
         </div>
         <Button variant="primary" text="Done" />
     </div>

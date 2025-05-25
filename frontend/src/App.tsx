@@ -3,16 +3,13 @@ import EditIcon from "./icons/EditIcon"
 import PlusIcon from "./icons/PlusIcon"
 import Button from "./UI/Button"
 import EventCard from "./UI/components/Cards/EventCards/EventDisplayCard"
-import LoginCard from "./UI/components/Cards/AuthCards/LoginCard"
-import Card from "./UI/components/Cards/AuthCards/LoginCard"
-import RegisterCard from "./UI/components/Cards/AuthCards/RegisterCard"
 import TextInput from "./UI/Input"
 import EventDisplayCard from "./UI/components/Cards/EventCards/EventDisplayCard"
 import Info from "./UI/Info"
 import RequestsCard from "./UI/components/Cards/ModCards/RequestsCard"
 import AddModeratorCard from "./UI/components/Cards/ModCards/AddModeratorCard"
 import ModeratorCard from "./UI/components/Cards/ModCards/ModeratorsCard"
-import Modal from "./UI/Modal"
+import Modal from "./UI/components/Modal"
 import Input from "./UI/Input"
 import EventActionCard from "./UI/components/Cards/EventCards/EventActionCard"
 import { useState } from "react"
@@ -21,13 +18,18 @@ import Sidebar from "./UI/components/Sidebar"
 import SidebarItem from "./UI/components/SidebarItem"
 import EventsIcon from "./icons/EventsIcon"
 import AboutIcon from "./icons/AboutIcon"
-import WorkshopIcon from "./icons/workshopIcon"
+import WorkshopIcon from "./icons/WorkshopIcon"
+import Header from "./UI/components/Header"
+import Alert from "./UI/components/Alert"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import About from "./pages/About"
 
 const App = () => {
   const [s, ss] = useState(true)
 
   return <div className="w-screen h-screen">
-    <div className="w-full h-full ">
       {/* <RegisterCard person="admin"/> */}
 
       {/* <LoginCard person="moderator"/> */}
@@ -56,10 +58,16 @@ const App = () => {
       {/* <AddModeratorCard /> */}
 
       {/* <ModeratorCard fname="Rohan" lname="Lenka" email="aguydgwyde7dgew7dedeg8degbc@gmail.com" /> */}
+
       {/* <Modal onClose={() => { ss(s => !s) }} open={s} >
         <AddModeratorCard />
       </Modal> */}
-      <Sidebar>
+
+        {/* <Modal onClose={() => { ss(s => !s) }} open={s} >
+          <Alert msg="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor commodo eleifend. Ut fermentum efficitur quam, a tincidunt ex. In ipsum nunc, sagittis mollis iaculis eu, aliquet " />
+      </Modal> */}
+
+      {/* <Sidebar>
         <>
           <SidebarItem onClick={() => {}} color="text-white" text="Events" icon={<EventsIcon />} />
           <SidebarItem onClick={() => {}} color="text-white" text="About" icon={<AboutIcon />} />
@@ -68,9 +76,37 @@ const App = () => {
       </Sidebar>
 
         <MainContent>
+          <>
+      
 <ModeratorCard fname="Rohan" lname="Lenka" email="aguydgwyde7dgew7dedeg8degbc@gmail.com" />
-        </MainContent>
-    </div>
+<ModeratorCard fname="Rohan" lname="Lenka" email="aguydgwyde7dgew7dedeg8degbc@gmail.com" />
+        </>
+        </MainContent> */}
+
+        <BrowserRouter>
+          <Routes>
+            {/* login routes*/}
+            <Route path="/user/login" element={<Login person="user" />} />
+            <Route path="/admin/login" element={<Login person="admin"/>} />
+            <Route path="/moderator/login" element={<Login person="moderator"/>} />
+            {/* register routes*/}
+            <Route path="/user/register" element={<Register person="user"/>} />
+            <Route path="/admin/register" element={<Register person="admin"/>} />
+            {/* user routes */}
+            <Route path="/user/college/events" element />
+            <Route path="/user/website/about" element={<About person="user"/>} />
+            {/* admin routes */}
+            <Route path="/admin/college/events" element />
+            <Route path="/admin/website/about" element={<About person="admin"/>} />
+            <Route path="/admin/workspace" element />
+            {/* moderator routes  */}
+            <Route path="/mod/requests" element />
+            <Route path="/mod/moderators" element />
+          </Routes>
+        </BrowserRouter>
+
+
+
   </div>
 }
 export default App
