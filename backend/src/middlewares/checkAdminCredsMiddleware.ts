@@ -7,14 +7,13 @@ async function checkAdminCredsMiddleware(req: Request, res: Response, next: Next
     const { email, password } = req.body;
     try {
         const reqBody = z.object({
-            email: z.string().min(3).max(50).email(),
+            email: z.string().min(3, "Email is too short").max(50, "Email is too long").email("Invalid email"),
             password: z.string()
         })
         const parsedData = reqBody.safeParse(req.body);
         if (!parsedData.success) {
             res.status(400).json({
-                message: "Incorrect format",
-                error: parsedData.error.issues[0].message,
+                message: `Incorrect format. ${parsedData.error.issues[0].message}`,
             });
             return;
         }

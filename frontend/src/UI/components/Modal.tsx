@@ -4,7 +4,7 @@ import CloseIcon from "../../icons/CloseIcon"
 
 type ModalProps = {
     children: ReactElement
-    open: boolean
+    open: boolean | string 
     onClose: () => void
 }
 

@@ -5,6 +5,7 @@ type ButtonProps = {
     text: string,
     startIcon?: ReactElement,
     onClick?: () => void
+    loading?: boolean 
 }
 
 const variantClasses = {
@@ -16,8 +17,8 @@ const variantClasses = {
 const defaultStyles = "text-blue-900 text-base font-medium cursor-pointer flex justify-center items-center gap-2 px-[10px] py-[6px] rounded-md"
 const hoverEffects = "hover:opacity-75"
 
-const Button = ({ variant, text, startIcon, onClick }: ButtonProps) => {
-    return <button onClick={onClick} className={`${variantClasses[variant]} ${defaultStyles} ${hoverEffects}`}>
+const Button = ({ variant, text, startIcon, onClick, loading }: ButtonProps) => {
+    return <button onClick={onClick} className={`${variantClasses[variant]} ${defaultStyles} ${hoverEffects} ${loading ? "opacity-75" : ""}`} disabled={loading}>
         {startIcon}
         {text}
     </button>

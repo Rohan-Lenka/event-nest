@@ -5,11 +5,11 @@ import { ModeratorModel } from "../db";
 import { SUPER_ADMIN, SUPER_ADMIN_ID, SUPER_ADMIN_SECRET_KEY } from "../config";
 
 async function checkModeratorCredsMiddleware( req: Request, res: Response, next: NextFunction) {
-    const { email, secretKey } = req.body;
+    const { email, password } = req.body;
 
     // check for super admin 
     if(email === SUPER_ADMIN) {
-        if(secretKey !== SUPER_ADMIN_SECRET_KEY) {
+        if(password !== SUPER_ADMIN_SECRET_KEY) {
             res.status(401).json({
                 message: "wrong secret key"
             })
@@ -22,14 +22,13 @@ async function checkModeratorCredsMiddleware( req: Request, res: Response, next:
     try {
         // add zod validation 
         const reqBody = z.object({
-            email: z.string().min(3).max(50).email(),
-            secretKey: z.string().length(8)
+            email: z.string().min(3, "Email is too short").max(50, "Email is too long").email("Invalid email"),
+            password: z.string()
         })
         const parsedData = reqBody.safeParse(req.body);
         if (!parsedData.success) {
             res.status(400).json({
-                message: "Incorrect format",
-                error: parsedData.error.issues[0].message,
+                message: `Incorrect format. ${parsedData.error.issues[0].message}`,
             });
             return;
         } 
@@ -40,7 +39,7 @@ async function checkModeratorCredsMiddleware( req: Request, res: Response, next:
             })
             return 
         }
-        const isSecretKeyCorrect = await bcrypt.compare(secretKey, foundMod.secret_key)
+        const isSecretKeyCorrect = await bcrypt.compare(password, foundMod.secret_key)
         if(!isSecretKeyCorrect) {
             res.status(401).json({
                 message: "wrong secret key"
