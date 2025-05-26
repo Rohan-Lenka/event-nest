@@ -1,16 +1,19 @@
+import { useNavigate } from "react-router-dom"
+import logout from "../functions/logout"
 import Button from "../UI/Button"
 import Header from "../UI/components/Header"
 import MainContent from "../UI/components/MainContent"
 import Sidebar from "../UI/components/Sidebar"
 
 const About = ({ person }: { person: "user" | "admin" | "moderator" }) => {
+    const navigate = useNavigate()
     return <div className="w-full h-full">
         <Sidebar person={person} />
         <MainContent>
             <>
                 <Header>
-                    <div className="flex justify-center items-center">
-                        <Button variant="delete" text="Logout" />
+                    <div className="flex justify-center gap-2 items-center">
+                        <Button variant="delete" text="Logout" onClick={() => logout(navigate, person)}/>
                     </div>
                 </Header>
                 <div className="text-xl text-white">

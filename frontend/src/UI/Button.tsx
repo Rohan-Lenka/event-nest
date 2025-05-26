@@ -18,7 +18,7 @@ const defaultStyles = "text-blue-900 text-base font-medium cursor-pointer flex j
 const hoverEffects = "hover:opacity-75"
 
 const Button = ({ variant, text, startIcon, onClick, loading }: ButtonProps) => {
-    return <button onClick={onClick} className={`${variantClasses[variant]} ${defaultStyles} ${hoverEffects} ${loading ? "opacity-75" : ""}`} disabled={loading}>
+    return <button onClick={onClick} className={`${variantClasses[variant]} ${defaultStyles} ${hoverEffects} ${loading ? "opacity-50" : ""}`} disabled={loading}>
         {startIcon}
         {text}
     </button>

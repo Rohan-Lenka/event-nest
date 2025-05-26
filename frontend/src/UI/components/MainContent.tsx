@@ -5,7 +5,7 @@ type MainContentProps = {
 }
 
 const MainContent = ({ children }: MainContentProps) => {
-    return <div className="h-full ml-72 pl-2">
+    return <div className="h-full ml-72 pr-4">
         {children}
     </div>
 }

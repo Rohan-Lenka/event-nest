@@ -30,7 +30,7 @@ const Register = ({ person }: RegisterProps) => {
     async function onRegister() {
         try {
             setLoading(e => e = true)
-            if(person === "user") {
+            if (person === "user") {
                 await axios.post(BACKEND_URL + `/api/v1/user/signup`, {
                     firstname: fnameRef.current?.value,
                     lastname: lnameRef.current?.value,
@@ -39,7 +39,7 @@ const Register = ({ person }: RegisterProps) => {
                     password: passwordRef.current?.value,
                 })
                 navigate("/user/login")
-            } else if(person === "admin") {
+            } else if (person === "admin") {
                 const res = await axios.post(BACKEND_URL + `/api/v1/admin/signup`, {
                     firstname: fnameRef.current?.value,
                     lastname: lnameRef.current?.value,
@@ -50,9 +50,8 @@ const Register = ({ person }: RegisterProps) => {
                     password: passwordRef.current?.value,
                 })
                 setOpenModal(e => e = res.data?.message)
-                navigate("/admin/login")   
             }
-        } catch(err: any) {
+        } catch (err: any) {
             const errMsg = err.response.data.message
             setOpenModal(e => e = errMsg)
         } finally {
@@ -80,7 +79,7 @@ const Register = ({ person }: RegisterProps) => {
                 <Input reference={emailRef} type="text" placeholder="Enter your email" />
                 <Input reference={passwordRef} type="password" placeholder="Enter your password" />
             </div>
-            <Button onClick={onRegister} variant="secondary" text={person === "user" ? "Register" : "Apply"} loading={loading}/>
+            <Button onClick={onRegister} variant="secondary" text={person === "user" ? "Register" : "Apply"} loading={loading} />
         </div>
     </div>
 }

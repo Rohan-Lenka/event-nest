@@ -33,8 +33,8 @@ const Sidebar = ({ person }: SidebarProps) => {
 
         {person === "moderator" &&
             <div className="flex flex-col gap-1 mt-10">
-                <SidebarItem onClick={() => navigate("/mod/requests")} color="text-white" text="Requests" icon={<AdminRequestsIcon />} />
-                <SidebarItem onClick={() => navigate("/mod/moderators")} color="text-white" text="Moderators" icon={<ModsIcon />} />
+                <SidebarItem onClick={() => navigate("/moderator/requests")} color="text-white" text="Requests" icon={<AdminRequestsIcon />} />
+                <SidebarItem onClick={() => navigate("/moderator/moderators")} color="text-white" text="Moderators" icon={<ModsIcon />} />
             </div>}
 
     </div>

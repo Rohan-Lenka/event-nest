@@ -4,7 +4,7 @@ import { z } from "zod"
 function validateEventMiddleware(req: Request, res: Response, next: NextFunction) {
     const reqBody = z.object({
         name: z.string().max(50, "Name is too long"),
-        description: z.string().max(200, "Description is too long"),
+        description: z.string().max(1000, "Description is too long"),
         status: z.enum(["Ongoing", "Upcoming"]),
         date: z.object({
             D: z.number().int().gte(1, "Invalid date").lte(31, "Invalid date"),

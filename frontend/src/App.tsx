@@ -25,6 +25,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import About from "./pages/About"
+import Events from "./pages/Events"
+import Workspace from "./pages/Workspace"
+import Requests from "./pages/Requests"
+import Moderators from "./pages/Moderators"
 
 const App = () => {
   const [s, ss] = useState(true)
@@ -93,15 +97,15 @@ const App = () => {
             <Route path="/user/register" element={<Register person="user"/>} />
             <Route path="/admin/register" element={<Register person="admin"/>} />
             {/* user routes */}
-            <Route path="/user/college/events" element />
+            <Route path="/user/college/events" element={<Events person="user"/>} />
             <Route path="/user/website/about" element={<About person="user"/>} />
             {/* admin routes */}
-            <Route path="/admin/college/events" element />
+            <Route path="/admin/college/events" element={<Events person="admin" />} />
             <Route path="/admin/website/about" element={<About person="admin"/>} />
-            <Route path="/admin/workspace" element />
+            <Route path="/admin/workspace" element={<Workspace person="admin" />} />
             {/* moderator routes  */}
-            <Route path="/mod/requests" element />
-            <Route path="/mod/moderators" element />
+            <Route path="/moderator/requests" element={<Requests person="moderator"/>} />
+            <Route path="/moderator/moderators" element={<Moderators person="moderator"/>} />
           </Routes>
         </BrowserRouter>
 

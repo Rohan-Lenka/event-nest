@@ -87,7 +87,7 @@ app.post("/api/v1/admin/signup", validateFormatMiddleware, async (req, res) => {
         if (foundCollege) {
             const collegeId = foundCollege._id
             const foundSociety = await SocietyModel.findOne({ college: collegeId })
-            if (foundSociety) {
+            if (foundSociety?.name === society) {
                 res.status(409).json({
                     message: "Admin of this society already exists",
                 })
