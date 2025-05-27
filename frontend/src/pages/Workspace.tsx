@@ -17,6 +17,7 @@ const Workspace = ({ person }: { person: "admin" }) => {
     const [openErrModal, setOpenErrModal] = useState<string>()
     const [openAddEventModal, setOpenAddEventModal] = useState<boolean>(false)
     const [openEditEventModal, setOpenEditEventModal] = useState<string | undefined>("")
+    // reason behind taking above as string | undefined type_ 
     const [loading, setLoading] = useState<boolean>(false)
 
     const nameRef = useRef<HTMLInputElement>(null)
@@ -60,7 +61,8 @@ const Workspace = ({ person }: { person: "admin" }) => {
                     authorization: localStorage.getItem("token")
                 }
             })
-            location.reload()
+            // location.reload()
+            setOpenEditEventModal(e => e = undefined)
         } catch (err: any) {
             const errMsg = err.response.data.message
             setOpenErrModal(e => e = errMsg)
@@ -79,7 +81,7 @@ const Workspace = ({ person }: { person: "admin" }) => {
                     authorization: localStorage.getItem("token")
                 }
             })
-            location.reload()
+            // location.reload()
         } catch (err: any) {
             const errMsg = err.response.data.message
             setOpenErrModal(e => e = errMsg)
@@ -109,7 +111,7 @@ const Workspace = ({ person }: { person: "admin" }) => {
 
     useEffect(() => {
         getAdminEvents()
-    }, [openAddEventModal])
+    }, [openAddEventModal, openEditEventModal])
 
     return <div className="w-full h-full">
 
@@ -154,9 +156,10 @@ const Workspace = ({ person }: { person: "admin" }) => {
                 </Header>
                 <div className="flex gap-2 pl-5 flex-wrap ">
                     {/* admin events */}
-                    {adminEvents.map((event) => {
+                    {adminEvents.map((event, key) => {
                         return (
                             <EventDisplayCard
+                                key={key}
                                 name={event.name}
                                 description={event.description}
                                 society={event.society}
@@ -169,6 +172,7 @@ const Workspace = ({ person }: { person: "admin" }) => {
                                     setOpenEditEventModal(_e => _e = e.target.closest(".container").id)
                                 }}
                                 onDelete={onDelete}
+                                loading={loading}
                             />
                         );
                     })}

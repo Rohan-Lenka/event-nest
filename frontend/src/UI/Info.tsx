@@ -21,7 +21,7 @@ const Info = ({ title, content, contentType, size, titleColor, contentColor }: I
                 </>
             }
             {contentType === "url" &&
-                <a href={content} target="_blank" className="hover:underline">
+                <a href={content} target="_blank" className="hover:text-neonblue-100 hover:underline">
                     {content}
                 </a>
             }

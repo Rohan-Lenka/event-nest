@@ -47,9 +47,10 @@ const Events = ({ person }: { person: "user" | "admin" }) => {
                 </Header>
                 <div className="flex gap-4 pl-5 flex-wrap ">
                     {/* college events */}
-                    {events.map((event) => {
+                    {events.map((event, key) => {
                         return (
                             <EventDisplayCard
+                                key={key}
                                 name={event.name}
                                 description={event.description}
                                 society={event.society}

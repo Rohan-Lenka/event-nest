@@ -32,7 +32,7 @@ const Login = ({ person }: LoginProps) => {
             if (person === "admin" || person === "user") {
                 navigate(`/${person}/college/events`)
             } else {
-                navigate("/mod/requests")
+                navigate("/moderator/requests")
             }
         } catch (err: any) {
             const errMsg = err.response.data.message

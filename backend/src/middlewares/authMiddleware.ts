@@ -32,7 +32,7 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
                 message: "unauthorized user"
             })
         }
-    } else if(type === "mod") {
+    } else if(type === "moderator") {
         try {
             const decoded = jwt.verify(token as string, MODERATOR_JWT_SECRET as string)
             if (decoded) {
