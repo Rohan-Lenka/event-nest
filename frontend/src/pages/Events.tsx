@@ -22,7 +22,6 @@ const Events = ({ person }: { person: "user" | "admin" }) => {
                     authorization: localStorage.getItem("token")
                 }
             })
-            console.log(res.data.events)
             setEvents(e => e = res.data.events)
         } catch (err: any) {
             const errMsg = err.response.data.message
@@ -43,7 +42,6 @@ const Events = ({ person }: { person: "user" | "admin" }) => {
             <>
                 <Header>
                     <div className="flex justify-center gap-2 items-center">
-                        {person === "admin" && <Button variant="primary" text="Add event" />}
                         <Button variant="delete" text="Logout" />
                     </div>
                 </Header>
@@ -58,6 +56,7 @@ const Events = ({ person }: { person: "user" | "admin" }) => {
                                 status={event.status}
                                 date={getDateAsString(event.date)}
                                 event_URL={event.event_URL}
+                                id={event._id}
                                 action={false}
                             />
                         );

@@ -4,7 +4,7 @@ type ButtonProps = {
     variant: "primary" | "secondary" | "edit" | "delete",
     text: string,
     startIcon?: ReactElement,
-    onClick?: () => void
+    onClick?: (e: any) => void
     loading?: boolean 
 }
 

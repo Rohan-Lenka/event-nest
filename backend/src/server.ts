@@ -198,7 +198,7 @@ app.post("/api/v1/admin/events", authMiddleware, validateEventMiddleware, async 
             message: "new event added successfully"
         })
         return
-    } catch (err) {
+    } catch (err) { 
         sendServerError(res)
     }
 })

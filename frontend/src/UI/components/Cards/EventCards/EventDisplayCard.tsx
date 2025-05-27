@@ -8,10 +8,14 @@ type EventDisplayCardProps = {
     name: string,
     description: string,
     status: "Ongoing" | "Upcoming",
-    date?: string,
+    date: string,
     society: string,
     event_URL: string,
-    action: boolean
+    id: string,
+    action: boolean,
+    onEdit?: (e: any) => void,
+    onDelete?: (e: any) => void, 
+    loading?: boolean
 }
 
 const defaultStyles = "text-white tracking-wide flex flex-col gap-5 p-[18px] bg-blue-900 rounded-md h-82 w-72"
@@ -20,10 +24,10 @@ const eventTime = {
     "Upcoming": "starts from ",
 }
 
-const EventDisplayCard = ({ name, description, status, date, society, event_URL, action }: EventDisplayCardProps) => {
+const EventDisplayCard = ({ name, description, status, date, society, event_URL, id, action, onEdit, onDelete, loading }: EventDisplayCardProps) => {
     return <ShinyCover childBorderRadius="rounded-md" coverType="primary">
         {/* container  */}
-        <div className={`${defaultStyles} shiny-border`}>
+        <div id={id} className={`${defaultStyles} container`}>
             {/* name */}
             <div className="h-18 text-center text-2xl font-semibold overflow-y-auto">
                 {name}
@@ -60,8 +64,8 @@ const EventDisplayCard = ({ name, description, status, date, society, event_URL,
             {/* action section */}
             {action &&
                 <div className="flex justify-between">
-                    <Button variant="edit" text="Edit" startIcon={<EditIcon />} />
-                    <Button variant="delete" text="Delete" startIcon={<DeleteIcon />} />
+                    <Button onClick={onEdit} loading={loading} variant="edit" text="Edit" startIcon={<EditIcon />} />
+                    <Button onClick={onDelete} loading={loading} variant="delete" text="Delete" startIcon={<DeleteIcon />} />
                 </div>}
         </div>
     </ShinyCover>

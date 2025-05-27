@@ -16,7 +16,7 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
             }
         } catch (err) {
             res.status(401).json({
-                message: "unauthorized admmin"
+                message: "unauthorized admin"
             })
         }
     } else if(type === "user") {
