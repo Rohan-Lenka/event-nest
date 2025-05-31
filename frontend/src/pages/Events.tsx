@@ -9,8 +9,12 @@ import { BACKEND_URL } from "../config"
 import Modal from "../UI/components/Modal"
 import Alert from "../UI/components/Alert"
 import getDateAsString from "../functions/getDateAsString"
+import logout from "../functions/logout"
+import { useNavigate } from "react-router-dom"
 
 const Events = ({ person }: { person: "user" | "admin" }) => {
+    const navigate = useNavigate()
+
     const [events, setEvents] = useState<any[]>([])
     const [openModal, setOpenModal] = useState<string>()
 
@@ -42,7 +46,7 @@ const Events = ({ person }: { person: "user" | "admin" }) => {
             <>
                 <Header>
                     <div className="flex justify-center gap-2 items-center">
-                        <Button variant="delete" text="Logout" />
+                        <Button onClick={() => logout(navigate, person)} variant="delete" text="Logout" />
                     </div>
                 </Header>
                 <div className="flex gap-4 pl-5 flex-wrap ">

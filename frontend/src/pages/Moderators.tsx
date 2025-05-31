@@ -9,8 +9,12 @@ import axios from "axios"
 import { BACKEND_URL } from "../config"
 import ModeratorCard from "../UI/components/Cards/ModCards/ModeratorsCard"
 import AddModeratorCard from "../UI/components/Cards/ModCards/AddModeratorCard"
+import { useNavigate } from "react-router-dom"
+import logout from "../functions/logout"
 
 const Moderators = ({ person }: { person: "moderator" }) => {
+    const navigate = useNavigate()
+
     const [openAddModModal, setOpenAddModModal] = useState<boolean>(false)
     const [openErrModal, setOpenErrModal] = useState<string>()
     const [mods, setMods] = useState<any[]>([])
@@ -101,19 +105,19 @@ const Moderators = ({ person }: { person: "moderator" }) => {
                 <Header>
                     <div className="flex justify-center gap-2 items-center">
                         <Button onClick={() => setOpenAddModModal(e => e = true)} variant="primary" text="Add Moderator" />
-                        <Button variant="delete" text="Logout" />
+                        <Button onClick={() => logout(navigate, person)} variant="delete" text="Logout" />
                     </div>
                 </Header>
                 <div className="flex flex-col pl-5">
                     {/* moderators */}
-                    {mods.map((mods, key) => {
+                    {mods.map((mod, key) => {
                         return (
                             <ModeratorCard
                                 key={key}
-                                id={mods._id}
-                                fname={mods.firstname}
-                                lname={mods.lastname}
-                                email={mods.email}
+                                id={mod._id}
+                                fname={mod.firstname}
+                                lname={mod.lastname}
+                                email={mod.email}
                                 onRemove={onRemove}
                                 loading={loading}
                             />

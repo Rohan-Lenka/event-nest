@@ -145,26 +145,6 @@ app.get("/api/v1/events", authMiddleware, async (req, res) => {
 })
 
 // admin control 
-app.get("/api/v1/admin/society", authMiddleware, async (req, res) => {
-    // @ts-ignore
-    const _id = req.Id
-    try {
-        const admin = await AdminModel.findOne({ _id })
-        if (!admin) {
-            res.status(404).json({
-                message: "admin not found"
-            })
-            return
-        }
-        const society = await SocietyModel.findOne({ _id: admin.society })
-        res.status(200).json({
-            society: society?.name
-        })
-    } catch (err) {
-        sendServerError(res)
-    }
-})
-
 app.get("/api/v1/admin/events", authMiddleware, async (req, res) => {
     // @ts-ignore
     const _id = req.Id

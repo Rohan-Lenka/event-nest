@@ -8,8 +8,12 @@ import { BACKEND_URL } from "../config"
 import RequestsCard from "../UI/components/Cards/ModCards/RequestsCard"
 import Modal from "../UI/components/Modal"
 import Alert from "../UI/components/Alert"
+import { useNavigate } from "react-router-dom"
+import logout from "../functions/logout"
 
 const Requests = ({ person }: { person: "moderator" }) => {
+    const navigate = useNavigate()
+
     const [requests, setRequests] = useState<any[]>([])
     const [openErrModal, setOpenErrModal] = useState<string>()
     const [loading, setLoading] = useState<boolean>(false)
@@ -80,7 +84,7 @@ const Requests = ({ person }: { person: "moderator" }) => {
             <>
                 <Header>
                     <div className="flex justify-center gap-2 items-center">
-                        <Button variant="delete" text="Logout" />
+                        <Button onClick={() => logout(navigate, person)} variant="delete" text="Logout" />
                     </div>
                 </Header>
                 <div className="flex flex-col pl-5">

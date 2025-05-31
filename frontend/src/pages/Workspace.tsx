@@ -11,13 +11,19 @@ import Alert from "../UI/components/Alert"
 import getDateAsString from "../functions/getDateAsString"
 import EventActionCard from "../UI/components/Cards/EventCards/EventActionCard"
 import getDateAsNumber from "../functions/getDateAsNumber"
+import { useNavigate } from "react-router-dom"
+import logout from "../functions/logout"
 
 const Workspace = ({ person }: { person: "admin" }) => {
+    const navigate = useNavigate()
+
     const [adminEvents, setAdminEvents] = useState<any[]>([])
     const [openErrModal, setOpenErrModal] = useState<string>()
     const [openAddEventModal, setOpenAddEventModal] = useState<boolean>(false)
     const [openEditEventModal, setOpenEditEventModal] = useState<string | undefined>("")
     // reason behind taking above as string | undefined type_ 
+    // undefined to return false & close the modal
+    // string in order to store the msg to be displayed in Alert modal
     const [loading, setLoading] = useState<boolean>(false)
 
     const nameRef = useRef<HTMLInputElement>(null)
@@ -111,7 +117,7 @@ const Workspace = ({ person }: { person: "admin" }) => {
 
     useEffect(() => {
         getAdminEvents()
-    }, [openAddEventModal, openEditEventModal])
+    }, [openAddEventModal, openEditEventModal, loading])
 
     return <div className="w-full h-full">
 
@@ -151,7 +157,7 @@ const Workspace = ({ person }: { person: "admin" }) => {
                 <Header>
                     <div className="flex justify-center gap-2 items-center">
                         <Button onClick={() => setOpenAddEventModal(e => e = true)} variant="primary" text="Add Event" />
-                        <Button variant="delete" text="Logout" />
+                        <Button onClick={() => logout(navigate, person)} variant="delete" text="Logout" />
                     </div>
                 </Header>
                 <div className="flex gap-2 pl-5 flex-wrap ">
