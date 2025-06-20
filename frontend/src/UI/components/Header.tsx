@@ -1,5 +1,4 @@
 import type { ReactElement } from "react"
-import Button from "../Button"
 
 type HeaderProps = {
     children: ReactElement
