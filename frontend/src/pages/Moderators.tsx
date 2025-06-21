@@ -42,9 +42,9 @@ const Moderators = ({ person }: { person: "moderator" }) => {
     async function onAddMod() {
         try {
             setLoading(e => e = true)
-            const firstname = fnameRef.current?.value
-            const lastname = lnameRef.current?.value
-            const email = emailRef.current?.value
+            const firstname = fnameRef.current?.value.trim()
+            const lastname = lnameRef.current?.value.trim()
+            const email = emailRef.current?.value.trim()
             const data = { firstname, lastname, email }
             await axios.post(BACKEND_URL + "/api/v1/super-admin/moderators", data, {
                 headers: {

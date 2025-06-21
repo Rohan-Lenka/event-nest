@@ -24,7 +24,7 @@ const Login = ({ person }: LoginProps) => {
         try {
             setLoading(e => e = true)
             const res = await axios.post(BACKEND_URL + `/api/v1/${person}/signin`, {
-                email: emailRef.current?.value,
+                email: emailRef.current?.value.trim(),
                 password: passwordRef.current?.value
             })
             const jwt = res.data.token

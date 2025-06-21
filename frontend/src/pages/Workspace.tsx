@@ -48,12 +48,12 @@ const Workspace = ({ person }: { person: "admin" }) => {
     }
 
     function getData() {
-        const name = nameRef.current?.value
-        const description = descRef.current?.value
+        const name = nameRef.current?.value.trim()
+        const description = descRef.current?.value.trim()
         let status: "Ongoing" | "Upcoming" = "Upcoming"
         if (statusRef.current?.checked) status = "Ongoing"
         const date = getDateAsNumber(dateRef.current?.value!)
-        const event_URL = linkRef.current?.value
+        const event_URL = linkRef.current?.value.trim()
         return { name, description, status, date, event_URL }
     }
 

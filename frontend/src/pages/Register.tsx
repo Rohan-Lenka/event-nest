@@ -32,21 +32,21 @@ const Register = ({ person }: RegisterProps) => {
             setLoading(e => e = true)
             if (person === "user") {
                 await axios.post(BACKEND_URL + `/api/v1/user/signup`, {
-                    firstname: fnameRef.current?.value,
-                    lastname: lnameRef.current?.value,
-                    college: collegeRef.current?.value,
-                    email: emailRef.current?.value,
+                    firstname: fnameRef.current?.value.trim(),
+                    lastname: lnameRef.current?.value.trim(),
+                    college: collegeRef.current?.value.trim(),
+                    email: emailRef.current?.value.trim(),
                     password: passwordRef.current?.value,
                 })
                 navigate("/user/login")
             } else if (person === "admin") {
                 const res = await axios.post(BACKEND_URL + `/api/v1/admin/signup`, {
-                    firstname: fnameRef.current?.value,
-                    lastname: lnameRef.current?.value,
-                    college: collegeRef.current?.value,
-                    society: societyRef.current?.value,
-                    identity_proof: proofRef.current?.value,
-                    email: emailRef.current?.value,
+                    firstname: fnameRef.current?.value.trim(),
+                    lastname: lnameRef.current?.value.trim(),
+                    college: collegeRef.current?.value.trim(),
+                    society: societyRef.current?.value.trim(),
+                    identity_proof: proofRef.current?.value.trim(),
+                    email: emailRef.current?.value.trim(),
                     password: passwordRef.current?.value,
                 })
                 setOpenModal(e => e = res.data?.message)
