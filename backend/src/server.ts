@@ -51,7 +51,6 @@ app.post("/api/v1/user/signup", validateFormatMiddleware, async (req, res) => {
 
 app.post("/api/v1/user/signin", checkUserCredsMiddleware, async (req, res) => {
     try {
-        // @ts-ignore
         const token = jwt.sign({ id: req.headers.userId }, USER_JWT_SECRET)
         res.status(200).json({
             token,
@@ -108,7 +107,6 @@ app.post("/api/v1/admin/signup", validateFormatMiddleware, async (req, res) => {
 
 app.post("/api/v1/admin/signin", checkAdminCredsMiddleware, async (req, res) => {
     try {
-        // @ts-ignore
         const token = jwt.sign({ id: req.headers.adminId }, ADMIN_JWT_SECRET)
         res.status(200).json({
             token,
@@ -121,19 +119,22 @@ app.post("/api/v1/admin/signin", checkAdminCredsMiddleware, async (req, res) => 
 
 // events for user & admin 
 app.get("/api/v1/events", authMiddleware, async (req, res) => {
-    // @ts-ignore
     const _id = req.Id
     const type = req.headers.type
     try {
-        let collegeId: mongoose.Types.ObjectId
+        let collegeId: mongoose.Types.ObjectId | undefined
         if (type === "admin") {
             const admin = await AdminModel.findOne({ _id })
             collegeId = admin?.college as mongoose.Types.ObjectId
         } else if (type === "user") {
             const user = await UserModel.findOne({ _id })
             collegeId = user?.college as mongoose.Types.ObjectId
+        } else {
+            res.status(400).json({
+                message: "Wrong payload"
+            })
+            return
         }
-        // @ts-ignore
         const events = await EventModel.find({ college: collegeId }).select("name description society status date event_URL")
         res.status(200).json({
             message: "all events fetched",
@@ -146,7 +147,6 @@ app.get("/api/v1/events", authMiddleware, async (req, res) => {
 
 // admin control 
 app.get("/api/v1/admin/events", authMiddleware, async (req, res) => {
-    // @ts-ignore
     const _id = req.Id
     try {
         const admin = await AdminModel.findOne({ _id })
@@ -167,12 +167,10 @@ app.get("/api/v1/admin/events", authMiddleware, async (req, res) => {
 
 app.post("/api/v1/admin/events", authMiddleware, validateEventMiddleware, async (req, res) => {
     const { name, description, status, date, event_URL } = req.body
-    // @ts-ignore
     const _id = req.Id
     try {
         const admin = await AdminModel.findOne({ _id })
         const society = await SocietyModel.findOne({ _id: admin?.society })
-        // @ts-ignore
         await EventModel.create({ name, description, status, date, event_URL, college: admin?.college, admin: admin?._id, society: society?.name })
         res.status(200).json({
             message: "new event added successfully"
@@ -207,7 +205,6 @@ app.delete("/api/v1/admin/events/:id", authMiddleware, async (req, res) => {
         let code: number = 404, msg: string = "requested event to delete was not found"
         const event = await EventModel.findByIdAndDelete(_id)
         if (event) {
-            // @ts-ignore
             code = 200, msg = `${event.name} event deleted successfully`
         }
         res.status(code).json({
@@ -221,7 +218,6 @@ app.delete("/api/v1/admin/events/:id", authMiddleware, async (req, res) => {
 // moderator 
 app.post("/api/v1/moderator/signin", checkModeratorCredsMiddleware, async (req, res) => {
     try {
-        // @ts-ignore
         const token = jwt.sign({ id: req.headers.modId }, MODERATOR_JWT_SECRET)
         res.status(200).json({
             token,
@@ -299,7 +295,6 @@ app.put("/api/v1/moderator/requests/manage/:id", authMiddleware, async (req, res
 
 // only for super admin
 app.get("/api/v1/super-admin/moderators", authMiddleware, async (req, res) => {
-    //@ts-ignore
     const _id = req.Id
     if (_id !== SUPER_ADMIN_ID) {
         res.status(403).json({
@@ -318,7 +313,6 @@ app.get("/api/v1/super-admin/moderators", authMiddleware, async (req, res) => {
 })
 
 app.post("/api/v1/super-admin/moderators", authMiddleware, async (req, res) => {
-    //@ts-ignore
     const _id = req.Id
     if (_id !== SUPER_ADMIN_ID) {
         res.status(403).json({
@@ -359,7 +353,6 @@ app.delete("/api/v1/super-admin/moderators/:id", authMiddleware, async (req, res
         let code: number = 404, msg: string = "requested moderator to remove was not found"
         const mod = await ModeratorModel.findByIdAndDelete(_id)
         if (mod) {
-            // @ts-ignore
             code = 200, msg = `${mod.email} removed successfully`
         }
         res.status(code).json({
@@ -373,7 +366,6 @@ app.delete("/api/v1/super-admin/moderators/:id", authMiddleware, async (req, res
 
 async function main() {
     try {
-        // @ts-ignore
         await mongoose.connect(MONGO_URL);
         console.log("Connected to database")
         const server = app.listen(PORT, () => {

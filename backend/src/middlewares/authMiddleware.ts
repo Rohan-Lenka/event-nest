@@ -8,9 +8,8 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
     const type = req.headers.type
     if (type === "admin") {
         try {
-            const decoded = jwt.verify(token as string, ADMIN_JWT_SECRET as string)
+            const decoded = jwt.verify(token as string, ADMIN_JWT_SECRET as string) as jwt.JwtPayload
             if (decoded) {
-                // @ts-ignore
                 req.Id = decoded.id
                 next()
             }
@@ -21,9 +20,8 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
         }
     } else if(type === "user") {
         try {
-            const decoded = jwt.verify(token as string, USER_JWT_SECRET as string)
+            const decoded = jwt.verify(token as string, USER_JWT_SECRET as string) as jwt.JwtPayload
             if (decoded) {
-                // @ts-ignore
                 req.Id = decoded.id
                 next()
             }
@@ -34,9 +32,8 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
         }
     } else if(type === "moderator") {
         try {
-            const decoded = jwt.verify(token as string, MODERATOR_JWT_SECRET as string)
+            const decoded = jwt.verify(token as string, MODERATOR_JWT_SECRET as string) as jwt.JwtPayload
             if (decoded) {
-                // @ts-ignore
                 req.Id = decoded.id
                 next()
             }
